@@ -175,10 +175,9 @@ def get_sparse_dowker_nerve_edge_matrix(dowker_nerve_edge_matrix,
 
     '''
     sparse_dowker_nerve_edge_matrix = dowker_nerve_edge_matrix
-    sparse_edges = np.logical_and(dowker_nerve_edge_matrix
-                                  <= death_times.reshape(len(death_times), 1),
-                                  dowker_nerve_edge_matrix
-                                  <= death_times.reshape(1, len(death_times)))
+    sparse_edges = dowker_nerve_edge_matrix <= (
+        death_times.reshape(len(death_times), 1) + 
+        death_times.reshape(1, len(death_times)))
     sparse_dowker_nerve_edge_matrix[
         ~sparse_edges] = np.inf
     return sparse_dowker_nerve_edge_matrix
