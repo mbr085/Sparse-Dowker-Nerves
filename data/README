@@ -1,9 +1,0 @@
-Data sources: 
-
-nk15c30Dct.mat : https://github.com/appliedtopology/javaplex/raw/master/data/natural_images/nk15c30Dct.mat
-
-nk300c30Dct.mat : https://github.com/appliedtopology/javaplex/raw/master/data/natural_images/nk300c30Dct.mat
-
-pointsCycloOctane.mat : https://github.com/appliedtopology/javaplex/raw/a2e7ddaea384a5c93340c845cf34b73fbc05e526/src/matlab/for_distribution/tutorial_examples/pointsCycloOctane.mat
-
-dt.txt : www.cse.ohio-state.edu/%7Eyusu/software/SimBa-software.zip
