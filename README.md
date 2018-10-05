@@ -3,12 +3,13 @@
 ## Description
 
 An python library for calculating persistent homology from Sparse Dowker Nerves as described in:
-
-> N. Blaser, M. Brun (2018). [Sparse Dowker Nerves](https://arxiv.org/abs/1802.03655)
-
-and 
+ 
 
 > N. Blaser, M. Brun (2018). [Sparse Filtered Nerves](https://arxiv.org/abs/1810.02149)
+
+and
+
+> N. Blaser, M. Brun (2018). [Sparse Dowker Nerves](https://arxiv.org/abs/1802.03655)
 
 ## Prerequisites
 
