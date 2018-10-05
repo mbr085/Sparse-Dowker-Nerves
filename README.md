@@ -35,4 +35,4 @@ To install the latest version of this python library:
 
 ## Getting started
 
-Please have a look at the online [tutorial](http://htmlpreview.github.io/?https://github.com/mbr085/Sparse-Dowker-Nerves/blob/master/docs/dowker_homology_tutorial.html). 
+Please have a look at the online [tutorial](https://mbr085.github.io/Sparse-Dowker-Nerves). 
