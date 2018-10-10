@@ -233,19 +233,25 @@ class Dowker_Base:
 
         return None
 
-    def cardinality_information(self, X=None):
+    def cardinality_information(self, X=None, verbose=True):
         self.update_X(X)
-        card_unred = np.sum([binom(len(self.X), _i) 
-                             for _i in range(1, self.dimension + 3)])
-        print('Unreduced nerve has cardinality ' + str(int(card_unred)))
+        self.card_unreduced = int(np.sum(
+                [binom(len(self.X), _i) 
+                 for _i in range(1, self.dimension + 3)]))
+        if verbose:
+            print('Unreduced nerve has cardinality ' + 
+                  str(self.card_unreduced))
         if hasattr(self, 'filtered_nerve'):
-            card_red = len(self.filtered_nerve)
-            print('Reduced nerve has cardinality ' + str(int(card_red)))
+            self.card_reduced = len(self.filtered_nerve)
+            if verbose:
+                print('Reduced nerve has cardinality ' + 
+                      str(self.card_reduced))
         elif hasattr(self, 'actual_max_simplex_size'):
             card_dim = self.dimension + 1
             card_actual = self.actual_max_simplex_size
-            print('The ' +
-                  str(int(card_dim)) +
-                  '-skeleton of the biggest simplex in the nerve ' +
-                  'has cardinality ' + str(int(card_actual)))
+            if verbose: 
+                print('The ' +
+                      str(int(card_dim)) +
+                      '-skeleton of the biggest simplex in the nerve ' +
+                      'has cardinality ' + str(int(card_actual)))
 

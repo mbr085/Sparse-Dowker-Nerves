@@ -116,7 +116,6 @@ class Dowker_Intrinsic_Sheehy_Parent(Dowker_Intrinsic):
         self.parent_point_list = df.get_parent_point_list(self.truncation_times, 
                                                           self.X)
 
-
     def get_restriction_times(self, X=None):
         """Calculate restriction times"""
         self.update_X(X)
@@ -128,18 +127,11 @@ class Dowker_Intrinsic_Sheehy_Parent(Dowker_Intrinsic):
             len(self.truncation_times), dtype=int)
         self.restriction_times = np.full(
             len(self.truncation_times), np.inf)
+        truncation_order = np.argsort(self.truncation_times)[::-1]
         for point_index in range(1, len(self.truncation_times)):
-            for parent_index in range(point_index)[::-1]:
-                if (self.truncation_times[parent_index] >=
-                    self.truncation_times[point_index]
-                    + sample_dowker_matrix[
-                        parent_index,
-                        point_index]):
-                    self.parent_point_list[point_index] = parent_index
-                    self.restriction_times[point_index] = (
-                        self.truncation_times[point_index]
-                        + sample_dowker_matrix[
-                            point_index,
-                            parent_index])
-                    break
-
+            ordered_point_index = truncation_order[point_index]
+            check_points = sample_dowker_matrix[ordered_point_index, :] < np.inf
+            max_dist = [np.max(sample_dowker_matrix[truncation_order[parent_index], check_points]) 
+                        for parent_index in range(point_index)]
+            self.restriction_times[point_index] = np.min(max_dist)
+            self.parent_point_list[point_index] = np.flatnonzero(check_points)[np.argmin(max_dist)]

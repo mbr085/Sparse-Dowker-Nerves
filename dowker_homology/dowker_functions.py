@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import itertools
 import collections
 import operator
@@ -515,3 +516,22 @@ def inverse_beta(alpha):
     def inverse_beta_function(time):
         return inversefunc(beta)(time)
     return inverse_beta_function
+
+
+def _summarize_one(dowker):
+    class_name = dowker.__class__.__name__
+    split_name = class_name.split("_")
+    if len(split_name) == 2:
+        split_name += ['SFN', 'SFN']
+    dowker.cardinality_information(verbose=False)
+    return pd.DataFrame({'space': [split_name[1]],
+                         'truncation': [split_name[2]],
+                         'reduction': [split_name[3]],
+                         'unreduced': [dowker.card_unreduced], 
+                         'reduced': [dowker.card_reduced]}, 
+                        columns = ['space', 'truncation', 'reduction', 'unreduced', 'reduced'])
+
+
+def summarize_dowker(*args):
+    res = pd.concat([_summarize_one(arg) for arg in args])
+    return res

@@ -11775,7 +11775,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Comparison-of-sparsification-strategies">Comparison of sparsification strategies<a class="anchor-link" href="#Comparison-of-sparsification-strategies">&#182;</a></h1><p>In this tutorial we describe the use of the python package <a href="https://github.com/blasern/dowker_homology">dowker_comparison</a> to calculate the persistent homology of point clouds. This is meant as a reference to compare the different strategies and examples in <a href="https://arxiv.org/abs/1802.03655">Sparse Dowker Nerves (SDN)</a> and <a href="">Sparse Filtered Nerves (SFN)</a>. The recommended sparsification strategy is implemented in <a href="https://github.com/mbr085/Sparse-Dowker-Nerves">dowker_homology</a>.</p>
+<h1 id="Comparison-of-sparsification-strategies">Comparison of sparsification strategies<a class="anchor-link" href="#Comparison-of-sparsification-strategies">&#182;</a></h1><p>In this tutorial we describe the use of the python package <a href="https://github.com/blasern/dowker_homology">dowker_comparison</a> to calculate the persistent homology of point clouds. This is meant as a reference to compare the different strategies and examples in <a href="https://arxiv.org/abs/1802.03655">Sparse Dowker Nerves (SDN)</a> and <a href="https://arxiv.org/abs/1810.02149">Sparse Filtered Nerves (SFN)</a>. The recommended sparsification strategy is implemented in <a href="https://github.com/mbr085/Sparse-Dowker-Nerves">dowker_homology</a>.</p>
 
 </div>
 </div>
@@ -11787,6 +11787,7 @@ div#notebook {
 <p>In this package we provide classes for calculating persistent homology using different truncation and sparsification methods. We have intrinsic and ambient classes for most methods. All classes are follow the naming scheme <code>Dowker_Intrinsic_Truncation_Sparsification</code> or <code>Dowker_Ambient_Truncation_Sparsification</code> and take the same arguments as their counterparts in <a href="dowker_homology_tutorial.html">dowker_homology</a>.</p>
 <h3 id="Truncation-methods">Truncation methods<a class="anchor-link" href="#Truncation-methods">&#182;</a></h3><p>We have implemented truncation methods described by Cavanna, Jahanseir and Sheehy in <a href="https://arxiv.org/abs/1506.03797">A Geometric Perspective on Sparse Filtrations</a> and Definition 6 in <a href="https://arxiv.org/abs/1802.03655">Sparse Dowker Nerves</a>, which will be termed 'Sheehy'.</p>
 <h3 id="Restriction-methods">Restriction methods<a class="anchor-link" href="#Restriction-methods">&#182;</a></h3><p>The two restriction methods implemented here come from <a href="https://arxiv.org/abs/1802.03655">Sparse Dowker Nerves</a> and are termed 'Sheehy' for the method described in Proposition 1 and 'Parent' for the method described in Definition 8.</p>
+<h3 id="Examples">Examples<a class="anchor-link" href="#Examples">&#182;</a></h3><p>In this tutorial we present two quick examples. For a more complete overview see our <a href="https://github.com/mbr085/Sparse-Dowker-Nerves/tree/master/examples">examples</a>. Note that these may take a long time to run.</p>
 
 </div>
 </div>
@@ -11845,8 +11846,8 @@ np.random.seed(1)
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 764 ms, sys: 160 ms, total: 924 ms
-Wall time: 2.13 s
+<pre>CPU times: user 796 ms, sys: 192 ms, total: 988 ms
+Wall time: 3.15 s
 </pre>
 </div>
 </div>
@@ -11891,6 +11892,38 @@ dowker_intrinsic_sheehy_parent = dc.Dowker_Intrinsic_Sheehy_Parent(**params)
 dowker_ambient = dh.Dowker_Ambient(**params)
 dowker_ambient_sheehy_sheehy = dc.Dowker_Ambient_Sheehy_Sheehy(**params)
 dowker_ambient_sheehy_parent = dc.Dowker_Ambient_Sheehy_Parent(**params)
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>CPU times: user 0 ns, sys: 0 ns, total: 0 ns
+Wall time: 247 µs
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
 # calculate persistent homology
 dowker_intrinsic.persistence(X=coords)
 dowker_intrinsic_sheehy_sheehy.persistence(X=coords)
@@ -11914,8 +11947,8 @@ dowker_ambient_sheehy_parent.persistence(X=coords)
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 8.32 s, sys: 148 ms, total: 8.46 s
-Wall time: 8.49 s
+<pre>CPU times: user 7.47 s, sys: 216 ms, total: 7.68 s
+Wall time: 7.72 s
 </pre>
 </div>
 </div>
@@ -11935,26 +11968,16 @@ Wall time: 8.49 s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Info about dowker_intrinsic&#39;</span><span class="p">)</span>
-<span class="n">dowker_intrinsic</span><span class="o">.</span><span class="n">cardinality_information</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Info about dowker_intrinsic_sheehy_sheehy&#39;</span><span class="p">)</span>
-<span class="n">dowker_intrinsic_sheehy_sheehy</span><span class="o">.</span><span class="n">cardinality_information</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Info about dowker_intrinsic_sheehy_parent&#39;</span><span class="p">)</span>
-<span class="n">dowker_intrinsic_sheehy_parent</span><span class="o">.</span><span class="n">cardinality_information</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Info about dowker_ambient&#39;</span><span class="p">)</span>
-<span class="n">dowker_ambient</span><span class="o">.</span><span class="n">cardinality_information</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Info about dowker_ambient_sheehy_sheehy&#39;</span><span class="p">)</span>
-<span class="n">dowker_ambient_sheehy_sheehy</span><span class="o">.</span><span class="n">cardinality_information</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Info about dowker_ambient_sheehy_parent&#39;</span><span class="p">)</span>
-<span class="n">dowker_ambient_sheehy_parent</span><span class="o">.</span><span class="n">cardinality_information</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># summarize sizes</span>
+<span class="n">dh</span><span class="o">.</span><span class="n">dowker_functions</span><span class="o">.</span><span class="n">summarize_dowker</span><span class="p">(</span><span class="n">dowker_intrinsic</span><span class="p">,</span>
+                                     <span class="n">dowker_intrinsic_sheehy_sheehy</span><span class="p">,</span>
+                                     <span class="n">dowker_intrinsic_sheehy_parent</span><span class="p">,</span>
+                                     <span class="n">dowker_ambient</span><span class="p">,</span>
+                                     <span class="n">dowker_ambient_sheehy_sheehy</span><span class="p">,</span>
+                                     <span class="n">dowker_ambient_sheehy_parent</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -11967,35 +11990,90 @@ Wall time: 8.49 s
 
 <div class="output_area">
 
-<div class="prompt"></div>
+<div class="prompt output_prompt">Out[6]:</div>
 
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Info about dowker_intrinsic
-Unreduced nerve has cardinality 166750
-Reduced nerve has cardinality 1718
 
-Info about dowker_intrinsic_sheehy_sheehy
-Unreduced nerve has cardinality 166750
-Reduced nerve has cardinality 34130
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
 
-Info about dowker_intrinsic_sheehy_parent
-Unreduced nerve has cardinality 166750
-Reduced nerve has cardinality 38410
+    .dataframe thead th {
+        text-align: left;
+    }
 
-Info about dowker_ambient
-Unreduced nerve has cardinality 166750
-Reduced nerve has cardinality 1854
-
-Info about dowker_ambient_sheehy_sheehy
-Unreduced nerve has cardinality 166750
-Reduced nerve has cardinality 40458
-
-Info about dowker_ambient_sheehy_parent
-Unreduced nerve has cardinality 166750
-Reduced nerve has cardinality 33246
-</pre>
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>space</th>
+      <th>truncation</th>
+      <th>reduction</th>
+      <th>unreduced</th>
+      <th>reduced</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Intrinsic</td>
+      <td>SFN</td>
+      <td>SFN</td>
+      <td>166750</td>
+      <td>1718</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Intrinsic</td>
+      <td>Sheehy</td>
+      <td>Sheehy</td>
+      <td>166750</td>
+      <td>34130</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Intrinsic</td>
+      <td>Sheehy</td>
+      <td>Parent</td>
+      <td>166750</td>
+      <td>33900</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Ambient</td>
+      <td>SFN</td>
+      <td>SFN</td>
+      <td>166750</td>
+      <td>1854</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Ambient</td>
+      <td>Sheehy</td>
+      <td>Sheehy</td>
+      <td>166750</td>
+      <td>40458</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Ambient</td>
+      <td>Sheehy</td>
+      <td>Parent</td>
+      <td>166750</td>
+      <td>33246</td>
+    </tr>
+  </tbody>
+</table>
 </div>
+</div>
+
 </div>
 
 </div>
@@ -12006,21 +12084,18 @@ Reduced nerve has cardinality 33246
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In this case the parent restriction was larger than the sheehy restriction for the intrinsic case and smaller for the ambient case. Note that the two restrictions result in homotopy equivalent nerves. The truncation and restriction methods presented in Sparse Filtered Nerves are considerably smaller, but result in different persistent homology with the same interleaving guarantees. 
-It looks like the ambient version using Sheehy truncation is closeer to the original persistence diagram than the version in Sparse Filtered Nerves, but results in much larger nerves. So the fact that the Sheehy truncation is closer to the original persistence diagram comes at the cost of taking much more time without any additional guaranteed benefit.</p>
+<p>In this case the parent restriction is slightly smaller than the Sheehy restriction. Note that for the intrinsic case the two restrictions result in homotopy equivalent nerves. In the ambient case they may differ slightly because in the parent restriction the original filtration values are used. The truncation and restriction methods presented in Sparse Filtered Nerves are considerably smaller, but result in different persistent homology with the same interleaving guarantees.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">dowker_intrinsic_sheehy_sheehy</span><span class="o">.</span><span class="n">homology</span><span class="p">,</span> 
                   <span class="n">dowker_intrinsic_sheehy_parent</span><span class="o">.</span><span class="n">homology</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">dowker_ambient_sheehy_sheehy</span><span class="o">.</span><span class="n">homology</span><span class="p">,</span> 
-                  <span class="n">dowker_ambient_sheehy_parent</span><span class="o">.</span><span class="n">homology</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -12038,7 +12113,6 @@ It looks like the ambient version using Sheehy truncation is closeer to the orig
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>True
-True
 </pre>
 </div>
 </div>
@@ -12058,7 +12132,7 @@ True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
@@ -13841,8 +13915,8 @@ kWhgBvaJFUoVFrqauVJKKZekQ3xKKaVckhYopZRSLkkLlFJKKZekBUoppZRL0gKllFLKJWmBUkop
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 864 ms, sys: 36 ms, total: 900 ms
-Wall time: 909 ms
+<pre>CPU times: user 840 ms, sys: 20 ms, total: 860 ms
+Wall time: 871 ms
 </pre>
 </div>
 </div>
@@ -13862,7 +13936,7 @@ Wall time: 909 ms
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Download data and transform to numpy array</span>
@@ -13884,7 +13958,7 @@ Wall time: 909 ms
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
@@ -13923,8 +13997,8 @@ dowker_ambient_sheehy_parent.persistence(X=coords)
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 35.3 s, sys: 540 ms, total: 35.9 s
-Wall time: 36 s
+<pre>CPU times: user 30.3 s, sys: 444 ms, total: 30.7 s
+Wall time: 30.8 s
 </pre>
 </div>
 </div>
@@ -13944,26 +14018,16 @@ Wall time: 36 s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Info about dowker_intrinsic&#39;</span><span class="p">)</span>
-<span class="n">dowker_intrinsic</span><span class="o">.</span><span class="n">cardinality_information</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Info about dowker_intrinsic_sheehy_sheehy&#39;</span><span class="p">)</span>
-<span class="n">dowker_intrinsic_sheehy_sheehy</span><span class="o">.</span><span class="n">cardinality_information</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Info about dowker_intrinsic_sheehy_parent&#39;</span><span class="p">)</span>
-<span class="n">dowker_intrinsic_sheehy_parent</span><span class="o">.</span><span class="n">cardinality_information</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Info about dowker_ambient&#39;</span><span class="p">)</span>
-<span class="n">dowker_ambient</span><span class="o">.</span><span class="n">cardinality_information</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Info about dowker_ambient_sheehy_sheehy&#39;</span><span class="p">)</span>
-<span class="n">dowker_ambient_sheehy_sheehy</span><span class="o">.</span><span class="n">cardinality_information</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Info about dowker_ambient_sheehy_parent&#39;</span><span class="p">)</span>
-<span class="n">dowker_ambient_sheehy_parent</span><span class="o">.</span><span class="n">cardinality_information</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># summarize sizes</span>
+<span class="n">dh</span><span class="o">.</span><span class="n">dowker_functions</span><span class="o">.</span><span class="n">summarize_dowker</span><span class="p">(</span><span class="n">dowker_intrinsic</span><span class="p">,</span>
+                                     <span class="n">dowker_intrinsic_sheehy_sheehy</span><span class="p">,</span>
+                                     <span class="n">dowker_intrinsic_sheehy_parent</span><span class="p">,</span>
+                                     <span class="n">dowker_ambient</span><span class="p">,</span>
+                                     <span class="n">dowker_ambient_sheehy_sheehy</span><span class="p">,</span>
+                                     <span class="n">dowker_ambient_sheehy_parent</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -13976,35 +14040,90 @@ Wall time: 36 s
 
 <div class="output_area">
 
-<div class="prompt"></div>
+<div class="prompt output_prompt">Out[11]:</div>
 
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Info about dowker_intrinsic
-Unreduced nerve has cardinality 166750
-Reduced nerve has cardinality 9745
 
-Info about dowker_intrinsic_sheehy_sheehy
-Unreduced nerve has cardinality 166750
-Reduced nerve has cardinality 101388
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
 
-Info about dowker_intrinsic_sheehy_parent
-Unreduced nerve has cardinality 166750
-Reduced nerve has cardinality 138337
+    .dataframe thead th {
+        text-align: left;
+    }
 
-Info about dowker_ambient
-Unreduced nerve has cardinality 166750
-Reduced nerve has cardinality 2314
-
-Info about dowker_ambient_sheehy_sheehy
-Unreduced nerve has cardinality 166750
-Reduced nerve has cardinality 112566
-
-Info about dowker_ambient_sheehy_parent
-Unreduced nerve has cardinality 166750
-Reduced nerve has cardinality 111583
-</pre>
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>space</th>
+      <th>truncation</th>
+      <th>reduction</th>
+      <th>unreduced</th>
+      <th>reduced</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Intrinsic</td>
+      <td>SFN</td>
+      <td>SFN</td>
+      <td>166750</td>
+      <td>9745</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Intrinsic</td>
+      <td>Sheehy</td>
+      <td>Sheehy</td>
+      <td>166750</td>
+      <td>101388</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Intrinsic</td>
+      <td>Sheehy</td>
+      <td>Parent</td>
+      <td>166750</td>
+      <td>117172</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Ambient</td>
+      <td>SFN</td>
+      <td>SFN</td>
+      <td>166750</td>
+      <td>2314</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Ambient</td>
+      <td>Sheehy</td>
+      <td>Sheehy</td>
+      <td>166750</td>
+      <td>112566</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Ambient</td>
+      <td>Sheehy</td>
+      <td>Parent</td>
+      <td>166750</td>
+      <td>111583</td>
+    </tr>
+  </tbody>
+</table>
 </div>
+</div>
+
 </div>
 
 </div>
@@ -14015,20 +14134,18 @@ Reduced nerve has cardinality 111583
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In this case the parent restriction was again larger than the sheehy restriction for the intrinsic case and smaller for the ambient case.</p>
+<p>In this case the parent restriction was larger than the Sheehy restriction for the intrinsic case and smaller for the ambient case.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">dowker_intrinsic_sheehy_sheehy</span><span class="o">.</span><span class="n">homology</span><span class="p">,</span> 
                   <span class="n">dowker_intrinsic_sheehy_parent</span><span class="o">.</span><span class="n">homology</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">dowker_ambient_sheehy_sheehy</span><span class="o">.</span><span class="n">homology</span><span class="p">,</span> 
-                  <span class="n">dowker_ambient_sheehy_parent</span><span class="o">.</span><span class="n">homology</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -14046,7 +14163,6 @@ Reduced nerve has cardinality 111583
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>True
-True
 </pre>
 </div>
 </div>
@@ -14066,7 +14182,7 @@ True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
@@ -15892,8 +16008,8 @@ rkJggg==
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 784 ms, sys: 36 ms, total: 820 ms
-Wall time: 822 ms
+<pre>CPU times: user 740 ms, sys: 32 ms, total: 772 ms
+Wall time: 773 ms
 </pre>
 </div>
 </div>
@@ -15913,7 +16029,7 @@ Wall time: 822 ms
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">total_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
@@ -15930,13 +16046,13 @@ Wall time: 822 ms
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[13]:</div>
+<div class="prompt output_prompt">Out[14]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>0.8116569320360819</pre>
+<pre>0.7328301668167114</pre>
 </div>
 
 </div>
