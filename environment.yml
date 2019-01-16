@@ -22,9 +22,7 @@ dependencies:
   - setuptools=40.6.3=py36_0
   - sphinx=1.8.2=py36_0
   - pip:
-    - hopcroftkarp==1.2.4
-    - miniball==0.2
     - persim==0.0.7
     - pynverse==0.1.4.4
     - pytest-repeat==0.7.0
-
+    - git+https://github.com/weddige/miniball.git
