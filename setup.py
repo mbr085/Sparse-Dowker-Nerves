@@ -3,10 +3,13 @@
 
 """Dowker homology
 
-An python library for calculating persistent homology from Sparse Dowker Nerves as described in:
+An python library for calculating persistent homology from
+Sparse Dowker Nerves as described in:
 
-N. Blaser, M. Brun (2018). Sparse Dowker Nerves (https://arxiv.org/abs/1802.03655)
-N. Blaser, M. Brun (2018). Sparse Filtered Nerves 
+N. Blaser, M. Brun (2018). Sparse Dowker Nerves
+(https://arxiv.org/abs/1802.03655)
+
+N. Blaser, M. Brun (2018). Sparse Filtered Nerves
 
 Installation
 
@@ -21,25 +24,22 @@ To install the latest version of this python library:
     cd Sparse-Dowker-Nerves
     pip install .
 
-For better performance phat can be installed via pip:
-
-    pip install phat
-
 """
 
 # import modules
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
-    name = "dowker_homology", 
-    version = "0.0.3", 
-    description = "An python library for calculating persistent homology from Sparse Dowker Nerves",
-    url = "https://github.com/mbr085/Sparse-Dowker-Nerves", 
-    author = "Nello Blaser, Morten Brun", 
-    author_email = "nello.blaser@uib.no, morten.brun@uib.no", 
-    license = "GPL-3", 
-    packages = ["dowker_homology", "dowker_comparison"],
-    classifiers = [
+    name="dowker_homology",
+    version="0.0.4",
+    description="An python library for calculating persistent" +
+    " homology from Sparse Dowker Nerves",
+    url="https://github.com/mbr085/Sparse-Dowker-Nerves",
+    author="Nello Blaser, Morten Brun",
+    author_email="nello.blaser@uib.no, morten.brun@uib.no",
+    license="GPL-3",
+    packages=["dowker_homology"],
+    classifiers=[
         # How mature is this project? Common values are
         #   3 - Alpha
         #   4 - Beta
@@ -58,11 +58,12 @@ setup(
         # 'Programming Language :: Python :: 2',
         # 'Programming Language :: Python :: 2.6',
         # 'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         # 'Programming Language :: Python :: 3.2',
         # 'Programming Language :: Python :: 3.3',
         # 'Programming Language :: Python :: 3.4'
-    ], 
-    keywords = "tda", 
-    install_requires = ["numpy", "scipy", "pandas", "pynverse", "matplotlib"]
+    ],
+    keywords="tda",
+    install_requires=["numpy", "scipy", "pandas", "pynverse", "matplotlib"]
 )

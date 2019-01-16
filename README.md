@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/blasern/dowker_homology.svg?token=2sVyUA59nUaWtyx2pWrP&branch=master)](https://travis-ci.com/blasern/dowker_homology)
+
 # Sparse-Dowker-Nerves
 
 ## Description
@@ -15,23 +17,18 @@ and
 
 This package is tested with python 3.6. 
 
-In order to use it you must install [the miniball package](https://github.com/weddige/miniball).
+In order to use it you must install [the miniball package](https://github.com/weddige/miniball). 
+In addition you need to install [gudhi](http://gudhi.gforge.inria.fr/python/latest/index.html). 
+We recomend you do this in a new anaconda environment as shown below. 
 
-    git clone https://github.com/weddige/miniball.git
-    cd miniball
-    pip install .
-    
-We recomment to install [phat](https://pypi.org/project/phat/).
-
-    pip install phat 
-    
 ## Installation
 
 To install the latest version of this python library:
 
-    git clone https://github.com/blasern/Sparse-Dowker-Nerves.git
-    cd Sparse-Dowker-Nerves
-    pip install .
+    pip install -r requirements.txt
+    pip install git+https://github.com/weddige/miniball
+    conda install -c conda-forge gudhi 
+    pip install git+https://github.com/Sparse-Dowker-Nerves/dowker_homology
 
 ## Getting started
 
