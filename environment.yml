@@ -141,7 +141,6 @@ dependencies:
   - urllib3=1.24.1=py36_0
   - wcwidth=0.1.7=py36_0
   - pip:
-    - dowker-homology==0.0.4
     - hopcroftkarp==1.2.4
     - miniball==0.2
     - persim==0.0.7
