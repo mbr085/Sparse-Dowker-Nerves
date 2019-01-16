@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/blasern/dowker_homology.svg?token=2sVyUA59nUaWtyx2pWrP&branch=master)](https://travis-ci.com/blasern/dowker_homology)
+[![Build Status](https://travis-ci.com/mbr085/Sparse-Dowker-Nerves.svg?branch=master)](https://travis-ci.com/mbr085/Sparse-Dowker-Nerves)
 
 # Sparse-Dowker-Nerves
 
