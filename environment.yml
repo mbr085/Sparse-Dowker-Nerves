@@ -6,6 +6,7 @@ dependencies:
   - gudhi
   - matplotlib
   - networkx
+  - nbsphinx
   - numpy
   - pandas
   - pytest
