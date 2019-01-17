@@ -43,7 +43,7 @@ extensions = ['sphinx.ext.autodoc',
 nbsphinx_timeout = 300
 
 # Use this kernel instead of the one stored in the notebook metadata:
-nbsphinx_kernel_name = 'dowker'
+nbsphinx_kernel_name = 'python'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
