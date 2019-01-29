@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.com/mbr085/Sparse-Dowker-Nerves.svg?branch=master)](https://travis-ci.com/mbr085/Sparse-Dowker-Nerves)
+[![Documentation Status](https://readthedocs.org/projects/sparse-dowker-nerves/badge/?version=latest)](https://sparse-dowker-nerves.readthedocs.io/en/latest/?badge=latest)
 
 # Sparse-Dowker-Nerves
 
@@ -32,4 +33,4 @@ To install the latest version of this python library:
 
 ## Getting started
 
-Please have a look at the online [tutorial](https://mbr085.github.io/Sparse-Dowker-Nerves). 
+Please have a look at the online [tutorial](https://sparse-dowker-nerves.readthedocs.io/en/latest/tutorial.html). 
