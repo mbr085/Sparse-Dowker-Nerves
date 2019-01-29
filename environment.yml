@@ -1,4 +1,3 @@
-name: dowker
 channels:
   - conda-forge
 dependencies:
