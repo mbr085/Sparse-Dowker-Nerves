@@ -7,7 +7,7 @@ dependencies:
   - gudhi
   - matplotlib
   - networkx
-  - nbsphinx
+  - nbconvert!=5.4
   - numpy
   - pandas
   - pytest
