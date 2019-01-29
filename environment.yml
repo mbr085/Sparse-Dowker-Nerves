@@ -2,6 +2,8 @@ channels:
   - conda-forge
 dependencies:
   - python=3.6
+  - ipykernel
+  - nbconvert
   - gudhi
   - matplotlib
   - networkx
