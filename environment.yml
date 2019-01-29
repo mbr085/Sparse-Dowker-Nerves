@@ -3,10 +3,10 @@ channels:
 dependencies:
   - python=3.6
   - ipykernel
-  - nbconvert
   - gudhi
   - matplotlib
   - networkx
+  - nbconvert!=5.4
   - nbsphinx
   - numpy
   - pandas
