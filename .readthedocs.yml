@@ -3,8 +3,8 @@ build:
 
 python:
   version: 3.6
-  setup_py_install: true
+  system_packages: true
+  install: true
 
 conda: 
   file: environment.yml
-
