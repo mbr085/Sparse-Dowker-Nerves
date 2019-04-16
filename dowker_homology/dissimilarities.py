@@ -113,13 +113,14 @@ def Dissimilarity(X,
     elif isinstance(X, nx.classes.graph.Graph):
         cutoff = kwargs.pop('cutoff', np.inf)
         n = X.number_of_nodes()
+        nodes = {j: idx for idx, j in enumerate(X.nodes)}
         C = sps.lil_matrix((n, n))
         for x in nx.all_pairs_dijkstra_path_length(X, cutoff=cutoff):
             for j, weight in x[1].items():
                 if weight == 0:
-                    C[x[0], j] = -np.inf
+                    C[nodes[x[0]], nodes[j]] = -np.inf
                 else:
-                    C[x[0], j] = weight
+                    C[nodes[x[0]], nodes[j]] = weight
         return DissimilaritySparse(C,
                                    isolated_points=isolated_points)
     else:
@@ -218,7 +219,7 @@ class DissimilarityNumpy:
     def witness_face(self, w):
         return frozenset(np.flatnonzero(self.X[:, w] < np.inf))
 
-    def get_neares_point_list(self):
+    def get_nearest_point_list(self):
         self.nearest_point_list = np.empty(self.X_orig.shape[0])
         for idx, x in enumerate(self.X_orig):
             self.nearest_point_list[idx] = np.argmin(
@@ -244,7 +245,7 @@ class DissimilarityAmbient(DissimilarityNumpy):
         self.shape = self.X.shape
         self.X_orig = X
 
-    def get_neares_point_list(self):
+    def get_nearest_point_list(self):
         self.nearest_point_list = None
 
     def subsample(self, point_list):
@@ -283,7 +284,6 @@ class DissimilarityAlpha(DissimilarityNumpy):
         self.shape = tuple([len(self.coords)] * 2)
         mb = Miniball(self.coords)
         self.radius = np.sqrt(mb.squared_radius())
-        self.X = np.array([[0]])
 
     def len(self):
         return self.coords.shape[0]
@@ -309,6 +309,9 @@ class DissimilarityAlpha(DissimilarityNumpy):
 
         return simplex_filtration_value
 
+    def get_nearest_point_list(self):
+        self.nearest_point_list = np.arange(len(self.coords))
+
 
 class DissimilaritySparse(DissimilarityNumpy):
 
@@ -322,7 +325,7 @@ class DissimilaritySparse(DissimilarityNumpy):
         self.W = self.X.transpose()
         self.cover_radius = 0
 
-    def get_neares_point_list(self):
+    def get_nearest_point_list(self):
         self.nearest_point_list = None
 
     def max(self):

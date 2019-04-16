@@ -8,7 +8,7 @@ No commercial use of the software is permitted without proper license.
 import collections
 import numpy as np
 from . import nerves
-from .simplex_tree import SimplexTreeFromNerve, representing_cycles
+from .simplex_tree import SimplexTreeFromNerve
 from scipy.spatial.distance import _METRIC_ALIAS
 
 
@@ -373,7 +373,7 @@ class Persistence(object):
         """
         self.get_simplex_tree(X)
         if not hasattr(self.nerve.DD, 'nearest_point_list'):
-            self.nerve.DD.get_neares_point_list()
+            self.nerve.DD.get_nearest_point_list()
             self.simplex_tree.nearest_point_list = (
                 self.nerve.DD.nearest_point_list)
         if not hasattr(self.simplex_tree, 'dgms'):
@@ -389,6 +389,7 @@ class Persistence(object):
                          colormap="default",
                          size=10,
                          alpha=0.5,
+                         add_multiplicity=False,
                          ax_color=np.array([0.0, 0.0, 0.0]),
                          colors=None,
                          diagonal=True,
@@ -401,7 +402,7 @@ class Persistence(object):
 
         Parameters
         ----------
-        X : data 
+        X : data
         plot_only: list of numeric
             If specified, an array of only the diagrams that should be plotted.
         title: string, default is None
@@ -419,13 +420,15 @@ class Persistence(object):
             Pixel size of each point plotted.
         alpha: numeric (default : 0.5)
             Transparency of each point plotted.
+        add_multiplicity: boolean (default : False)
+            Add the multiplicity of each point plotted. 
         ax_color: any valid matplotlib color type.
             See https://matplotlib.org/api/colors_api.html for complete API.
         colors : list of colors
             color list for different homology dimensions
         diagonal : bool (default : True)
             Plot the diagonal x=y line.
-        lifetime : bool (default : False). If True, diagonal is turned to False.
+        lifetime : bool (default : False). If True, diagonal is turned False.
             Plot life time of each point instead of birth and death.  \
             Essentially, visualize (x, y-x).
         legend : bool (default : True)
@@ -437,7 +440,7 @@ class Persistence(object):
         return_plot : bool (default : False)
             Should plt be returned?
         """
-        self.get_simplex_tree(X)
+        self.persistent_homology(X)
         plt = self.simplex_tree.plot_persistence(
             plot_only=plot_only,
             title=title,
@@ -446,6 +449,7 @@ class Persistence(object):
             colormap=colormap,
             size=size,
             alpha=alpha,
+            add_multiplicity=add_multiplicity,
             ax_color=ax_color,
             colors=colors,
             diagonal=diagonal,
@@ -458,27 +462,26 @@ class Persistence(object):
 
     def components(self,
                    X=None,
-                   persistence_threshold=0,
+                   persistence_function=0,
                    max_birth_value=np.inf):
         self.persistent_homology(X)
         return self.simplex_tree.components(
-            persistence_threshold, max_birth_value)
+            persistence_function, max_birth_value)
 
-    def persistence_points(self, X=None, persistence_threshold=0, depth=None):
+    def persistence_points(self, X=None, persistence_function=0, depth=None):
         self.persistent_homology(X)
         return self.simplex_tree.persistence_points(
-            persistence_threshold, depth)
+            persistence_function, depth)
 
-    def cycle_components(self, X=None, persistence_threshold=0):
+    def cycle_components(self, X=None, persistence_function=0):
         self.persistent_homology(X)
-        return self.simplex_tree.cycle_components(persistence_threshold)
+        return self.simplex_tree.cycle_components(persistence_function)
 
-    def cycle_representatives(self, X=None, persistence_threshold=0):
+    def cycle_representatives(self, X=None, persistence_function=0):
         self.persistent_homology(X)
         if not hasattr(self.nerve.DD, 'nearest_point_list'):
-            self.nerve.DD.get_neares_point_list()
-        cycles = representing_cycles(
-            persistence_threshold=persistence_threshold,
-            simplex_tree=self.simplex_tree)
+            self.nerve.DD.get_nearest_point_list()
+        cycles = self.simplex_tree.cycle_representatives(
+            persistence_function=persistence_function)
         return [[self.nerve.truncation.point_sample[list(edge)] for
                  edge in cycle] for cycle in cycles]

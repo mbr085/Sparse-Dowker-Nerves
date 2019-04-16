@@ -84,7 +84,8 @@ class SimplexTree(gudhi.SimplexTree):
             homology_coeff_field=coeff_field,
             min_persistence=min_persistence,
             persistence_dim_max=persistence_dim_max)
-        max_homology_dimension = self.dimension() - 1 + persistence_dim_max
+        max_homology_dimension = max(
+            1, self.dimension() - 1 + persistence_dim_max)
         self.dgms = [[] for dim in range(max_homology_dimension + 1)]
         for hclass in persistence:
             self.dgms[hclass[0]].append((hclass[1][0], hclass[1][1]))
@@ -100,6 +101,7 @@ class SimplexTree(gudhi.SimplexTree):
             colormap="default",
             size=10,
             alpha=0.5,
+            add_multiplicity=False,
             ax_color=np.array([0.0, 0.0, 0.0]),
             colors=None,
             diagonal=True,
@@ -130,6 +132,8 @@ class SimplexTree(gudhi.SimplexTree):
             Pixel size of each point plotted.
         alpha: numeric (default : 0.5)
             Transparency of each point plotted.
+        add_multiplicity: boolean (default : False)
+            Show multiplicity of points plotted.
         ax_color: any valid matplotlib color type.
             See https://matplotlib.org/api/colors_api.html for complete API.
         diagonal: bool (default : True)
@@ -165,7 +169,8 @@ class SimplexTree(gudhi.SimplexTree):
             lifetime=lifetime,
             legend=legend,
             show=show,
-            alpha=alpha
+            alpha=alpha,
+            add_multiplicity=add_multiplicity,
         )
 
         if return_plot:
@@ -188,6 +193,7 @@ def plot_dgms(
         legend=True,
         show=False,
         alpha=0.5,
+        add_multiplicity=False,
         rips_dimension=None,
 ):
     # Originally from https://github.com/scikit-tda/ripser.py/blob/master/\
@@ -211,6 +217,9 @@ def plot_dgms(
     if not isinstance(diagrams, list):
         # Must have diagrams as a list for processing downstream
         diagrams = [diagrams]
+    if sum((len(dgm) for dgm in diagrams)) <= 1:
+        print('Persistence diagram is empty!\n Nothing to plot.')
+        return
 
     if plot_only is None:
         plot_only = [i for i, dgm in enumerate(diagrams) if len(dgm) > 0]
@@ -322,6 +331,11 @@ def plot_dgms(
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
 
+        if add_multiplicity:
+            xy_arr, s_arr = np.unique(dgm, return_counts=True, axis=0)
+            for xy, s in zip(xy_arr, s_arr):
+                plt.text(xy[0], xy[1], s)
+
     plt.xlim([ax, bx])
     plt.ylim([ay, by])
 
@@ -342,207 +356,6 @@ def rips_interleaving_line(n, ax, bx):
         dim_const = np.sqrt(2 * n / (n + 1))
         return np.array([ax, bx / dim_const]), np.array([ax, bx])
     return interleaving_line
-
-
-def persistence_clusters(persistence_threshold,
-                         max_birth_value,
-                         simplex_tree):
-    # simplex_tree.persistence(
-    #     homology_coeff_field=2,
-    #     min_persistence=0,
-    #     persistence_dim_max=0)
-    if not hasattr(simplex_tree, 'dgms'):
-        simplex_tree.persistent_homology()
-    filtration_values = dict(
-        (frozenset(face), value)
-        for (face, value) in simplex_tree.get_skeleton(1))
-    filtration_values[frozenset()] = np.inf
-    birth_points = []
-    death_values = []
-    birth_values = []
-    for pair in simplex_tree.persistence_pairs():
-        if len(pair[0]) == 1:
-            birth = frozenset(pair[0])
-            death = frozenset(pair[1])
-            birth_value = filtration_values[birth]
-            death_value = filtration_values[death]
-            if (death_value - birth_value >= persistence_threshold
-                and
-                    birth_value <= max_birth_value):
-                birth_points.append(pair[0][0])
-                birth_values.append(birth_value)
-                death_values.append(death_value)
-    cluster_dta = dict()
-    bd_clusters = {birth_point: dict() for birth_point in birth_points}
-    edges = [list(face) for face in filtration_values.keys() if len(face) == 2]
-    for death_value in death_values:
-        graph = nx.Graph()
-        selected_edges = [
-            edge for edge in edges
-            if filtration_values[frozenset(edge)] < death_value]
-        graph.add_edges_from(selected_edges)
-        graph.add_nodes_from(birth_points)
-        born_points = [birth_point for birth_point, birth_values in
-                       zip(birth_points, birth_values) if
-                       birth_value <= death_value]
-        for birth_point in born_points:
-            selected_cluster = frozenset(
-                nx.shortest_path(graph, birth_point).keys())
-            if selected_cluster in cluster_dta.keys():
-                cluster_dta[selected_cluster].append(
-                    (birth_point, death_value))
-            else:
-                cluster_dta[selected_cluster] = [
-                    (birth_point, death_value)]
-            bd_clusters[birth_point][death_value] = selected_cluster
-    core_points = {}
-    for cluster, dta in cluster_dta.items():
-        core_points[cluster] = frozenset(
-            (birth_point for birth_point, death_value in dta))
-
-    return [list(bd_clusters[birth_point][max(
-        (death_value for death_value, cluster in
-         bd_clusters[birth_point].items() if
-         len(core_points[cluster]) <= 1))]) for
-        birth_point in birth_points]
-
-
-def representing_cycles(persistence_threshold,
-                        simplex_tree,
-                        coeff_field=11):
-    # simplex_tree.persistence(
-    #     homology_coeff_field=coeff_field,
-    #     min_persistence=0,
-    #     persistence_dim_max=1)
-    if not hasattr(simplex_tree, 'dgms'):
-        simplex_tree.persistent_homology()
-    filtration_values = dict(
-        (frozenset(face), value)
-        for (face, value) in simplex_tree.get_skeleton(2))
-    filtration_values[frozenset()] = np.inf
-    birth_edges = []
-    persistence_values = {}
-    for pair in simplex_tree.persistence_pairs():
-        if len(pair[0]) == 2:
-            birth = frozenset(pair[0])
-            death = frozenset(pair[1])
-            persistence = filtration_values[death] - filtration_values[birth]
-            if persistence >= persistence_threshold:
-                birth_edges.append(list(birth))
-                persistence_values[frozenset(list(birth))] = persistence
-    subgraphs = []
-    birth_edges.sort(key=lambda x: -persistence_values[frozenset(x)])
-    edges = [list(face) for face in filtration_values.keys() if len(face) == 2]
-    for birth_edge in birth_edges:
-        graph = nx.Graph()
-        selected_edges = [
-            edge for edge in edges
-            if filtration_values[frozenset(edge)] <
-            filtration_values[frozenset(birth_edge)]]
-        graph.add_edges_from(selected_edges)
-        graph.add_nodes_from(birth_edge)
-        try:
-            subgraphs.append(list(graph.subgraph(
-                nx.shortest_path(
-                    graph, birth_edge[0], birth_edge[1])).edges()) +
-                [birth_edge])
-        except nx.NetworkXNoPath:
-            graph = nx.Graph()
-            selected_edges = [
-                edge for edge in edges
-                if filtration_values[frozenset(edge)] <=
-                filtration_values[frozenset(birth_edge)]]
-            graph.add_edges_from(selected_edges)
-            graph.remove_edge(*birth_edge)
-            graph.add_nodes_from(birth_edge)
-            try:
-                subgraphs.append(list(graph.subgraph(
-                    nx.shortest_path(
-                        graph, birth_edge[0], birth_edge[1])).edges()) +
-                    [birth_edge])
-            except nx.NetworkXNoPath:
-                pass
-    return subgraphs
-
-
-def cycle_clusters(persistence_threshold,
-                   simplex_tree,
-                   coeff_field=11):
-    # simplex_tree.persistence(
-    #     homology_coeff_field=11,
-    #     min_persistence=0,
-    #     persistence_dim_max=1)
-    if not hasattr(simplex_tree, 'dgms'):
-        simplex_tree.persistent_homology()
-    filtration_values = dict(
-        (frozenset(face), value)
-        for (face, value) in simplex_tree.get_skeleton(2))
-    filtration_values[frozenset()] = np.inf
-    birth_edges = []
-    persistence_values = {}
-    for pair in simplex_tree.persistence_pairs():
-        if len(pair[0]) == 2:
-            birth = frozenset(pair[0])
-            death = frozenset(pair[1])
-            persistence = filtration_values[death] - filtration_values[birth]
-            if persistence >= persistence_threshold:
-                birth_edges.append(list(birth))
-                persistence_values[frozenset(list(birth))] = persistence
-    birth_edges.sort(key=lambda x: -persistence_values[frozenset(x)])
-    clusters = []
-    edges = [list(face) for face in filtration_values.keys() if len(face) == 2]
-    for birth_edge in birth_edges:
-        graph = nx.Graph()
-        selected_edges = [
-            edge for edge in edges
-            if filtration_values[frozenset(edge)] <=
-            filtration_values[frozenset(birth_edge)]]
-        graph.add_edges_from(selected_edges)
-        graph.add_nodes_from(birth_edge)
-        clusters.append(
-            list(nx.shortest_path(graph, birth_edge[0]).keys()))
-    return clusters
-
-
-def depth_clusters(persistence_threshold,
-                   depth,
-                   simplex_tree):
-    if depth is None:
-        depth = persistence_threshold
-    if not hasattr(simplex_tree, 'dgms'):
-        simplex_tree.persistent_homology()
-    # simplex_tree.persistence(
-    #     homology_coeff_field=2,
-    #     min_persistence=0,
-    #     persistence_dim_max=1)
-    filtration_values = dict(
-        (frozenset(face), value)
-        for (face, value) in simplex_tree.get_skeleton(2))
-    filtration_values[frozenset()] = np.inf
-    birth_points = []
-    persistence_values = {}
-    for pair in simplex_tree.persistence_pairs():
-        if len(pair[0]) == 1:
-            birth = frozenset(pair[0])
-            death = frozenset(pair[1])
-            persistence = filtration_values[death] - filtration_values[birth]
-            if persistence >= persistence_threshold:
-                birth_points.append(list(birth))
-                persistence_values[frozenset(list(birth))] = persistence
-    birth_points.sort(key=lambda x: -persistence_values[frozenset(x)])
-    clusters = []
-    edges = [list(face) for face in filtration_values.keys() if len(face) == 2]
-    for birth_point in birth_points:
-        graph = nx.Graph()
-        selected_edges = [
-            edge for edge in edges
-            if filtration_values[frozenset(edge)] <=
-            filtration_values[frozenset(birth_point)] + depth]
-        graph.add_edges_from(selected_edges)
-        graph.add_nodes_from(birth_point)
-        clusters.append(
-            list(nx.shortest_path(graph, birth_point[0]).keys()))
-    return clusters
 
 
 def empty_interleaving_line(n_points=100):
