@@ -6,13 +6,12 @@
 ## Description
 
 An python library for calculating persistent homology from Sparse Dowker Nerves as described in:
- 
 
-> N. Blaser, M. Brun (2018). [Sparse Filtered Nerves](https://arxiv.org/abs/1810.02149)
+> N. Blaser, M. Brun (2019). [Sparse Dowker nerves](https://link.springer.com/article/10.1007/s41468-019-00028-9),
 
-and
+> N. Blaser, M. Brun (2018). [Sparse Filtered Nerves](https://arxiv.org/abs/1810.02149), and
 
-> N. Blaser, M. Brun (2018). [Sparse Dowker Nerves](https://arxiv.org/abs/1802.03655)
+> N. Blaser, M. Brun (2019). [Sparse Nerves in Practice](https://link.springer.com/chapter/10.1007/978-3-030-29726-8_17)
 
 ## Prerequisites
 
@@ -29,7 +28,7 @@ To install the latest version of this python library:
     pip install -r requirements.txt
     pip install git+https://github.com/weddige/miniball
     conda install -c conda-forge gudhi 
-    pip install git+https://github.com/Sparse-Dowker-Nerves/dowker_homology
+    pip install git+https://github.com/mbr085/Sparse-Dowker-Nerves
 
 ## Getting started
 
