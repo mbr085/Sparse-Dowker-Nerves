@@ -38,12 +38,15 @@ def SimplexTreeFromNerve(
 
 class SimplexTree(gudhi.SimplexTree):
 
+    def __new__(cls, interleaving_line=None, coeff_field=11, persistence_dim_max=False, min_persistence=0):
+        return super(SimplexTree, cls).__new__(cls)
+
     def __init__(self,
                  interleaving_line=None,
                  coeff_field=11,
                  persistence_dim_max=False,
                  min_persistence=0):
-        super().__init__()
+        # super().__init__()
         if interleaving_line is None:
             interleaving_line = empty_interleaving_line
         self.interleaving_line = interleaving_line
