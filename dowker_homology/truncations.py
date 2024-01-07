@@ -242,7 +242,6 @@ class TruncationCanonical(TruncationNumpy):
         self.farthest_point_sample = np.flatnonzero(insertion_times > -np.inf)
         self.cover_radius = np.min(insertion_times[self.farthest_point_sample])
 
-        self.max_filtration_value = np.max(self.X)
         Y = self.translation_function(self.X)
         farthest_point = self.initial_point
         self.farthest_point_list = [farthest_point]

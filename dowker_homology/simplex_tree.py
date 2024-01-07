@@ -1,49 +1,47 @@
-'''
+"""
 Python routines used to test claims in the papers
 *** SDN = Sparse Dowker Nerves ***
 *** SFN = Sparse Filtered Nerves ***
 Copyright: Applied Topology Group at University of Bergen.
 No commercial use of the software is permitted without proper license.
-'''
+"""
 import numpy as np
-import networkx as nx
 import matplotlib.pyplot as plt
 import gudhi
 from itertools import cycle
 import matplotlib as mpl
 
 
-def SimplexTreeFromNerve(
-        nerve,
-        coeff_field=11,
-        min_persistence=0):
+def SimplexTreeFromNerve(nerve, coeff_field=11, min_persistence=0):
 
     nerve.get_filtered_nerve()
-    geometric_dimension = max(
-        (len(x) for x in nerve.maximal_faces)) - 1
+    geometric_dimension = max((len(x) for x in nerve.maximal_faces)) - 1
     persistence_dim_max = geometric_dimension <= nerve.dimension
 
     simplex_tree = SimplexTree(
         interleaving_line=nerve.interleaving_line,
         coeff_field=coeff_field,
         persistence_dim_max=persistence_dim_max,
-        min_persistence=min_persistence)
+        min_persistence=min_persistence,
+    )
 
     for index, simplex in enumerate(nerve.nerve):
-        simplex_tree.insert(simplex=list(simplex),
-                            filtration=nerve.nerve_values[index])
+        simplex_tree.st.insert(
+            simplex=list(simplex), filtration=nerve.nerve_values[index]
+        )
 
     return simplex_tree
 
 
-class SimplexTree(gudhi.SimplexTree):
-
-    def __init__(self,
-                 interleaving_line=None,
-                 coeff_field=11,
-                 persistence_dim_max=False,
-                 min_persistence=0):
-        super().__init__()
+class SimplexTree():
+    def __init__(
+        self,
+        interleaving_line=None,
+        coeff_field=11,
+        persistence_dim_max=False,
+        min_persistence=0,
+    ):
+        self.st = gudhi.SimplexTree()
         if interleaving_line is None:
             interleaving_line = empty_interleaving_line
         self.interleaving_line = interleaving_line
@@ -52,11 +50,12 @@ class SimplexTree(gudhi.SimplexTree):
         self.min_persistence = min_persistence
 
     def persistent_homology(
-            self,
-            interleaving_line=None,
-            coeff_field=None,
-            persistence_dim_max=None,
-            min_persistence=None):
+        self,
+        interleaving_line=None,
+        coeff_field=None,
+        persistence_dim_max=None,
+        min_persistence=None,
+    ):
         """
         Computing persistent homology using gudhi.
 
@@ -80,12 +79,14 @@ class SimplexTree(gudhi.SimplexTree):
             persistence_dim_max = self.persistence_dim_max
         if min_persistence is None:
             min_persistence = self.min_persistence
-        persistence = self.persistence(
+        persistence = self.st.persistence(
             homology_coeff_field=coeff_field,
             min_persistence=min_persistence,
-            persistence_dim_max=persistence_dim_max)
+            persistence_dim_max=persistence_dim_max,
+        )
         max_homology_dimension = max(
-            1, self.dimension() - 1 + persistence_dim_max)
+            1, self.st.dimension() - 1 + persistence_dim_max
+        )
         self.dgms = [[] for dim in range(max_homology_dimension + 1)]
         for hclass in persistence:
             self.dgms[hclass[0]].append((hclass[1][0], hclass[1][1]))
@@ -93,22 +94,22 @@ class SimplexTree(gudhi.SimplexTree):
         return self.dgms
 
     def plot_persistence(
-            self,
-            plot_only=None,
-            title=None,
-            xy_range=None,
-            labels=None,
-            colormap="default",
-            size=10,
-            alpha=0.5,
-            add_multiplicity=False,
-            ax_color=np.array([0.0, 0.0, 0.0]),
-            colors=None,
-            diagonal=True,
-            lifetime=False,
-            legend=True,
-            show=False,
-            return_plot=False
+        self,
+        plot_only=None,
+        title=None,
+        xy_range=None,
+        labels=None,
+        colormap="default",
+        size=10,
+        alpha=0.5,
+        add_multiplicity=False,
+        ax_color=np.array([0.0, 0.0, 0.0]),
+        colors=None,
+        diagonal=True,
+        lifetime=False,
+        legend=True,
+        show=False,
+        return_plot=False,
     ):
         """
         Show or save persistence diagram
@@ -148,9 +149,9 @@ class SimplexTree(gudhi.SimplexTree):
             part of a subplot, set show=False and call plt.show() only once \
             at the end.
         """
-        if not hasattr(self, 'dgms'):
+        if not hasattr(self.st, "dgms"):
             self.persistent_homology()
-        if hasattr(self, 'interleaving_line'):
+        if hasattr(self, "interleaving_line"):
             interleaving_line = self.interleaving_line
         else:
             interleaving_line = empty_interleaving_line
@@ -178,23 +179,23 @@ class SimplexTree(gudhi.SimplexTree):
 
 
 def plot_dgms(
-        diagrams,
-        interleaving_line=None,
-        plot_only=None,
-        title=None,
-        xy_range=None,
-        labels=None,
-        colormap="default",
-        size=10,
-        ax_color=np.array([0.0, 0.0, 0.0]),
-        colors=None,
-        diagonal=True,
-        lifetime=False,
-        legend=True,
-        show=False,
-        alpha=0.5,
-        add_multiplicity=False,
-        rips_dimension=None,
+    diagrams,
+    interleaving_line=None,
+    plot_only=None,
+    title=None,
+    xy_range=None,
+    labels=None,
+    colormap="default",
+    size=10,
+    ax_color=np.array([0.0, 0.0, 0.0]),
+    colors=None,
+    diagonal=True,
+    lifetime=False,
+    legend=True,
+    show=False,
+    alpha=0.5,
+    add_multiplicity=False,
+    rips_dimension=None,
 ):
     # Originally from https://github.com/scikit-tda/ripser.py/blob/master/\
     # ripser/ripser.py
@@ -218,7 +219,7 @@ def plot_dgms(
         # Must have diagrams as a list for processing downstream
         diagrams = [diagrams]
     if sum((len(dgm) for dgm in diagrams)) <= 1:
-        print('Persistence diagram is empty!\n Nothing to plot.')
+        print("Persistence diagram is empty!\n Nothing to plot.")
         return
 
     if plot_only is None:
@@ -231,8 +232,9 @@ def plot_dgms(
 
     if colors is None:
         mpl.style.use(colormap)
-        colors = cycle(["C0", "C1", "C2", "C3", "C4",
-                        "C5", "C6", "C7", "C8", "C9"])
+        colors = cycle(
+            ["C0", "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9"]
+        )
         colors = [next(colors) for i in range(len(diagrams))]
         colors = [colors[i] for i in plot_only]
 
@@ -263,7 +265,7 @@ def plot_dgms(
     else:
         ax, bx, ay, by = xy_range
     if max(ax - bx, ay - by) >= 0:
-        raise ValueError('Please specify a non-degenerate xy_range')
+        raise ValueError("Please specify a non-degenerate xy_range")
     yr = by - ay
 
     if rips_dimension is not None:
@@ -324,9 +326,16 @@ def plot_dgms(
     for dgm, color, label in list(zip(diagrams, colors, labels))[first_dgm:]:
 
         # plot persistence pairs
-        plt.plot(dgm[:, 0], dgm[:, 1], ms=size, color=color,
-                 label=label, linestyle='',  # edgecolor="none",
-                 alpha=alpha, marker='o')
+        plt.plot(
+            dgm[:, 0],
+            dgm[:, 1],
+            ms=size,
+            color=color,
+            label=label,
+            linestyle="",  # edgecolor="none",
+            alpha=alpha,
+            marker="o",
+        )
 
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
@@ -355,6 +364,7 @@ def rips_interleaving_line(n, ax, bx):
     def interleaving_line():
         dim_const = np.sqrt(2 * n / (n + 1))
         return np.array([ax, bx / dim_const]), np.array([ax, bx])
+
     return interleaving_line
 
 
